@@ -273,15 +273,15 @@ print("  Saved: 5_model_comparison.png")
 print("\n[Step 9] Plotting predicted vs actual stock trends...")
 
 fig, axes = plt.subplots(2, 1, figsize=(14, 10))
+slice_size = 100
 
 for ax, (name, y_pred) in zip(axes,
         [("Linear Regression", y_pred_lr),
          ("Random Forest",     y_pred_rf)]):
-    ax.plot(y_test.values, label="Actual Close Price",
-            color="black", linewidth=1.5)
-    ax.plot(y_pred,        label=f"Predicted ({name})",
-            color="tomato" if "Linear" in name else "steelblue",
-            linewidth=1.5, linestyle="--")
+    # Use [-slice_size:] to only plot the last 100 days
+    ax.plot(y_test.values[-slice_size:], label="Actual Close Price", color="black", linewidth=2)
+    ax.plot(y_pred[-slice_size:], label=f"Predicted ({name})", 
+            color="tomato" if "Linear" in name else "steelblue", linewidth=1.5, linestyle="--")
     ax.set_title(f"Actual vs Predicted — {name}", fontsize=12)
     ax.set_xlabel("Test Sample Index")
     ax.set_ylabel("Close Price")
